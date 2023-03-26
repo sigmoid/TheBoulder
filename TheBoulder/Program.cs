@@ -13,6 +13,8 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -21,6 +23,9 @@ app.UseRouting();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapGet("/debug/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
+	string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)));
 
 app.MapFallbackToFile("index.html"); ;
 
