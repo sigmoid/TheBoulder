@@ -1,92 +1,102 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 
-export class EditConversation extends Component {
-    static displayName = EditConversation.name;
+function EditConversation() {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentCount: 0,
-            pageData: null,
-            newResponseId : -1
-        };
-    }
+    const [state, setState] = useState({ newResponseId: -1, pageData: null, saveTimeout: null });
+    const debouncedSave = useCallback(debounce(() => savePageData(), 500), []);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyDown);
+        populateData();
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            savePageData();
+        }
+    }, []);
 
 
-    componentDidMount() {
-        window.addEventListener("keydown", this.handleKeyDown);
-        this.populateData();
-    }
+    /* ================== Save/Load ================== */
 
-    componentWillUnmount() {
-        window.removeEventListener("keydown", this.handleKeyDown);
-    }
-
-    async populateData() {
+    const populateData = async () => {
         const data = await fetch('api/dialogue/get-conversation?' + new URLSearchParams({ id: 1 }));
         console.log(data);
         const parsed = await data.json();
         console.log(parsed);
-        this.setState({ pageData: parsed }, () => { });
-
+        setState({ pageData: parsed });
     }
 
 
-
-    handleResponseChange = (event, id) => {
-
+    // debounced save method
+    const savePageData = async () => {
+        console.log('saving...');
+        fetch('api/dialogue/save-prompt', {
+            method: 'POST',
+            body: JSON.stringify(state.pageData.currentPrompt),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
     }
 
-    handleAddResponse = () => {
-        let newPageData = this.state.pageData;
+    /* ==================== State Changes ==================== */
 
-        newPageData.currentPrompt.responses.push({id: this.state.newResponseId, text:"response"});
-
-        console.log(this.state.newResponseId);
-
-        this.setState({ pageData: newPageData, newResponseId:this.state.newResponseId - 1 });
+    const handleResponseChange = (event, id) => {
+        let newState = { ...state };
+        newState.pageData.currentPrompt.responses.find(x => x.id === id).text = event.target.value;
+        setState(newState);
+        debouncedSave();
     }
 
-    handleKeyDown = (event) => {
+    const handleAddResponse = () => {
+        let newPageData = state.pageData;
+        newPageData.currentPrompt.responses.push({ id: state.newResponseId, text: "response" });
+        console.log(state.newResponseId);
+        setState({ pageData: newPageData, newResponseId: state.newResponseId - 1 });
+        debouncedSave();
+    }
+
+    const handleKeyDown = (event) => {
         if (event.ctrlKey && event.key === "Enter") {
             document.getElementById("addResponseButton").click();
         }
     }
 
-    handleDeleteResponse = (id) => {
-        console.log("deleting ", id);
-        let newResponses = this.state.pageData.currentPrompt.responses.filter((x) => { return x.id !== id });
-        let newCurrentPrompt = { ...this.state.pageData.currentPrompt, responses: newResponses };
-        let newPageData = { ...this.state.pageData, currentPrompt: newCurrentPrompt };
-        console.log(newPageData.responses);
-        this.setState({ pageData: newPageData });
+    const handleDeleteResponse = (id) => {
+        let newResponses = state.pageData.currentPrompt.responses.filter((x) => { return x.id !== id });
+        let newCurrentPrompt = { ...state.pageData.currentPrompt, responses: newResponses };
+        let newPageData = { ...state.pageData, currentPrompt: newCurrentPrompt };
+        setState({ pageData: newPageData });
+        debouncedSave();
     }
 
-    handlePromptChange = (event) => {
-        let pageData = this.state.pageData;
+    const handlePromptChange = (event) => {
+        let pageData = state.pageData;
         if (pageData.currentPrompt.texts === null || pageData.currentPrompt.texts.length === 0)
             pageData.currentPrompt.texts = [""];
         pageData.currentPrompt.texts[0].text = event.target.value;
-        this.setState({ pageData: pageData });
+        setState({ pageData: pageData });
+        debouncedSave();
     }
 
     /* ===================== Render =====================*/
 
-    renderResponses = () => {
+    const renderResponses = () => {
+
         return (
             <React.Fragment>
-                {this.state.pageData.currentPrompt.responses.map(x =>
+                {state.pageData.currentPrompt.responses.map(x =>
                 (
                     <div key={"response-row-".concat(x.id)} className="row justify-content-between">
                         <div className="col-md-4 text-end">
-                            <button onClick={() => this.handleDeleteResponse(x.id)} className="btn btn-sm btn-danger">X</button>
+                            <button onClick={() => handleDeleteResponse(x.id)} className="btn btn-sm btn-danger">X</button>
                         </div>
 
                         <div className="col-md-8">
                             <textarea
                                 className="rounded border w-100"
                                 key={"response-".concat(x.id)}
-                                onChange={() => this.handleResponseChange(x.id)}
+                                onChange={(ev) => handleResponseChange(ev, x.id)}
                                 value={x.text}
                             >
                                 {x.text}
@@ -97,28 +107,28 @@ export class EditConversation extends Component {
                 ))}
                 <div className="row justify-content-end" key={"new-response-btn"}>
                     <div className="col-auto">
-                        <button id="addResponseButton" onClick={this.handleAddResponse} className="btn btn-success">New Response (Ctrl+Enter)</button>
+                        <button id="addResponseButton" onClick={handleAddResponse} className="btn btn-success">New Response (Ctrl+Enter)</button>
                     </div>
                 </div>
             </React.Fragment>);
 
     }
 
-    renderCurrentPrompt = () => {
+    const renderCurrentPrompt = () => {
         return (
             <div key="currentPrompt" className="row">
                 <textarea
                     className="col-md-12 rounded border m-2"
                     key="promptText"
-                    onChange={this.handlePromptChange}
-                    value={this.state.pageData.currentPrompt.texts[0].text}
+                    onChange={handlePromptChange}
+                    value={state.pageData.currentPrompt.texts[0].text}
                 >
                 </textarea>
             </div>
         );
     }
 
-    renderConversationBeat = (conversationBeat) => {
+    const renderConversationBeat = (conversationBeat) => {
         const itemKey = (conversationBeat.promptId !== null) ? conversationBeat.promptId : conversationBeat.responseId;
 
         if (conversationBeat.promptId !== null) {
@@ -142,8 +152,8 @@ export class EditConversation extends Component {
 
     }
 
-    renderConversation = () => {
-        if (this.state.pageData === null) {
+    const renderConversation = () => {
+        if (state.pageData === null) {
             return (
                 <p>loading...</p>
             );
@@ -152,23 +162,25 @@ export class EditConversation extends Component {
             return (
                 <React.Fragment>
                     <div className="container">
-                        {this.state.pageData.previousConversation.map(x => this.renderConversationBeat(x))}
-                        {this.renderCurrentPrompt()}
-                        {this.renderResponses()}
+                        {state.pageData.previousConversation.map(x => renderConversationBeat(x))}
+                        {renderCurrentPrompt()}
+                        {renderResponses()}
                     </div>
                 </React.Fragment>
             );
         }
     }
 
-    render() {
-        return (
-            <div>
-                <h1>Edit Conversation</h1>
+    return (
+        <div>
+            <h1>Edit Conversation</h1>
 
-                {this.renderConversation()}
+            {renderConversation()}
 
-            </div>
-        );
-    }
+        </div>
+    );
 }
+
+EditConversation.displayName = 'EditConversation';
+
+export default EditConversation;

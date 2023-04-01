@@ -5,6 +5,7 @@ using TheBoulder.Models.Dialogue;
 
 namespace TheBoulder.Controllers
 {
+
 	[Route("api/[controller]")]
 	[ApiController]
 	public class DialogueController : ControllerBase
@@ -75,6 +76,13 @@ namespace TheBoulder.Controllers
 				},
 				CurrentPrompt = _state.Last()
 			};
+		}
+
+		[HttpPost]
+		[Route("save-prompt")]
+		public void SavePrompt(DialoguePrompt prompt)
+		{
+			Console.WriteLine(prompt.ToString());
 		}
 	}
 }

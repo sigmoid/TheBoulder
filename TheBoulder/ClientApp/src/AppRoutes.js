@@ -1,5 +1,5 @@
 import { Counter } from "./components/Counter";
-import { EditConversation } from "./components/EditConversation";
+import EditConversation from "./components/EditConversation";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { TestApi } from "./components/TestApi"
