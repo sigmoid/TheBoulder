@@ -1,0 +1,15 @@
+F:\Dev\TheBoulder\TheBoulder.DAL\bin\Debug\net6.0\TheBoulder.DAL.deps.json
+F:\Dev\TheBoulder\TheBoulder.DAL\bin\Debug\net6.0\TheBoulder.DAL.dll
+F:\Dev\TheBoulder\TheBoulder.DAL\bin\Debug\net6.0\TheBoulder.DAL.pdb
+F:\Dev\TheBoulder\TheBoulder.DAL\bin\Debug\net6.0\TheBoulder.Models.dll
+F:\Dev\TheBoulder\TheBoulder.DAL\bin\Debug\net6.0\TheBoulder.Models.pdb
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.csproj.AssemblyReference.cache
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.GeneratedMSBuildEditorConfig.editorconfig
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.AssemblyInfoInputs.cache
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.AssemblyInfo.cs
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.csproj.CoreCompileInputs.cache
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.csproj.CopyComplete
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.dll
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\refint\TheBoulder.DAL.dll
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\TheBoulder.DAL.pdb
+F:\Dev\TheBoulder\TheBoulder.DAL\obj\Debug\net6.0\ref\TheBoulder.DAL.dll

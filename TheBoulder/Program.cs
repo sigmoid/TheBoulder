@@ -1,8 +1,16 @@
+using TheBoulder.Core.Services;
+using TheBoulder.DAL;
+using TheBoulder.DAL.DataAccessLayers;
+using TheBoulder.DAL.DataAccessLibrary;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
+builder.Services.AddSingleton<IDialogueDAL, DialogueDAL>();
+builder.Services.AddSingleton<IDialogueService, DialogueService>();
 
 var app = builder.Build();
 

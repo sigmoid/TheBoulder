@@ -1,0 +1,6 @@
+F:\Dev\TheBoulder\TheBoulderDB\bin\Debug\TheBoulderDB.dacpac
+F:\Dev\TheBoulder\TheBoulderDB\bin\Debug\TheBoulderDB.dll
+F:\Dev\TheBoulder\TheBoulderDB\bin\Debug\TheBoulderDB.pdb
+F:\Dev\TheBoulder\TheBoulderDB\obj\Debug\TheBoulderDB.sqlproj.AssemblyReference.cache
+F:\Dev\TheBoulder\TheBoulderDB\obj\Debug\TheBoulderDB.dll
+F:\Dev\TheBoulder\TheBoulderDB\obj\Debug\TheBoulderDB.pdb

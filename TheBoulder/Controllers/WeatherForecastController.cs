@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TheBoulder.Core;
 
-namespace TheBoulder.Controllers
+namespace TheBoulder.Core.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]

@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
 function EditConversation() {
 
-    const [state, setState] = useState({ newResponseId: -1, pageData: null, saveTimeout: null });
+    const [state, setState] = useState({ pageData: null, saveTimeout: null });
     const debouncedSave = useCallback(debounce(() => savePageData(), 500), []);
 
     useEffect(() => {
@@ -21,7 +20,7 @@ function EditConversation() {
     /* ================== Save/Load ================== */
 
     const populateData = async () => {
-        const data = await fetch('api/dialogue/get-conversation?' + new URLSearchParams({ id: 1 }));
+        const data = await fetch('api/dialogue/get-conversation?' + new URLSearchParams({ id: 3 }));
         console.log(data);
         const parsed = await data.json();
         console.log(parsed);
@@ -29,14 +28,16 @@ function EditConversation() {
     }
 
 
-    // debounced save method
     const savePageData = async () => {
         console.log('saving...');
-        fetch('api/dialogue/save-prompt', {
-            method: 'POST',
-            body: JSON.stringify(state.pageData.currentPrompt),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
+
+        if (state.pageData.currentPrompt !== null) {
+            fetch('api/dialogue/save-prompt', {
+                method: 'POST',
+                body: JSON.stringify(state.pageData.currentPrompt),
+                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            });
+        }
     }
 
     /* ==================== State Changes ==================== */
@@ -48,11 +49,19 @@ function EditConversation() {
         debouncedSave();
     }
 
-    const handleAddResponse = () => {
-        let newPageData = state.pageData;
-        newPageData.currentPrompt.responses.push({ id: state.newResponseId, text: "response" });
-        console.log(state.newResponseId);
-        setState({ pageData: newPageData, newResponseId: state.newResponseId - 1 });
+    const handleAddResponse = async () => {
+        const newData = await fetch('api/dialogue/add-response', {
+            method: 'POST',
+            body: JSON.stringify(state.pageData.currentPrompt),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+
+        const parsed = await (newData.json());
+
+        let newPageData = { ...state.pageData };
+        newPageData.currentPrompt = parsed;
+        console.log(newPageData);
+        setState({ ...state, pageData: newPageData });
         debouncedSave();
     }
 

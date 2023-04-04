@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheBoulder.Models;
+using TheBoulder.Core.Models;
 
-namespace TheBoulder.Controllers
+namespace TheBoulder.Core.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
@@ -16,9 +16,9 @@ namespace TheBoulder.Controllers
 
 		[HttpPost]
 		[Route("test-send")]
-		public void TestSend([FromBody]string testString)
+		public void TestSend([FromBody] string testString)
 		{
-			
+
 		}
 	}
 }

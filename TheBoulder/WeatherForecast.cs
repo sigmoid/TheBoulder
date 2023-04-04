@@ -1,4 +1,4 @@
-namespace TheBoulder
+namespace TheBoulder.Core
 {
 	public class WeatherForecast
 	{

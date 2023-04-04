@@ -1,0 +1,12 @@
+F:\Dev\TheBoulder\TheBoulder.Models\bin\Debug\net6.0\TheBoulder.Models.deps.json
+F:\Dev\TheBoulder\TheBoulder.Models\bin\Debug\net6.0\TheBoulder.Models.dll
+F:\Dev\TheBoulder\TheBoulder.Models\bin\Debug\net6.0\TheBoulder.Models.pdb
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.csproj.AssemblyReference.cache
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.AssemblyInfoInputs.cache
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.AssemblyInfo.cs
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.csproj.CoreCompileInputs.cache
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.dll
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\refint\TheBoulder.Models.dll
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\TheBoulder.Models.pdb
+F:\Dev\TheBoulder\TheBoulder.Models\obj\Debug\net6.0\ref\TheBoulder.Models.dll

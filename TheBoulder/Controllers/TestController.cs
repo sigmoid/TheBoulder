@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TheBoulder.Models;
+using TheBoulder.Core.Models;
 
-namespace TheBoulder.Controllers
+namespace TheBoulder.Core.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
@@ -18,7 +18,7 @@ namespace TheBoulder.Controllers
 		[HttpPost]
 		[Route("test-post")]
 		public void TestPost(ItemModel model)
-		{ 
+		{
 		}
 	}
 }

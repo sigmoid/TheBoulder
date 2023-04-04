@@ -1,57 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TheBoulder.Models.ConversationPage;
+using TheBoulder.Core.Models.ConversationPage;
 using TheBoulder.Models.Dialogue;
+using TheBoulder.DAL.DataAccessLayers;
+using TheBoulder.Core.Services;
 
-namespace TheBoulder.Controllers
+namespace TheBoulder.Core.Controllers
 {
-
 	[Route("api/[controller]")]
 	[ApiController]
 	public class DialogueController : ControllerBase
 	{
-		private IList<DialoguePrompt> _state = new List<DialoguePrompt>() {
-			new DialoguePrompt(){
-				ID=1,
-				Texts= new List<DialoguePromptText>()
-				{
-					new DialoguePromptText()
-					{
-						Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dignissim a orci ut pharetra. Integer sollicitudin tellus est, eu hendrerit tellus vehicula ut."
-					}
-				},
-				Responses= new List<DialogueResponse>()
-				{
-					new DialogueResponse(){
-						Text="Hello, sisyphus"
-					},
-					new DialogueResponse(){
-						Text="Who are you?",
-						NextPromptId=2
-					}
-				}
-			},
-			new DialoguePrompt(){
-				ID=2,
-				Texts= new List<DialoguePromptText>()
-				{
-					new DialoguePromptText()
-					{
-						Text="Do you have anything else you want to ask me?"
-					}
-				},
-				Responses= new List<DialogueResponse>()
-				{
-					new DialogueResponse(){
-						Text="no way no way"
-					},
-				}
-			}
-		};
+		IDialogueService DialogueService;
+
+		public DialogueController(IDialogueService dialogueService)
+		{
+			DialogueService = dialogueService; 
+		}
+
+		private int nextID = 100;
 
 		[HttpGet]
 		[Route("get-conversation")]
-		public EditConversationPageData GetConversation([FromQuery]int id)
+		public EditConversationPageData GetConversation([FromQuery] int id)
 		{
 			return new EditConversationPageData()
 			{
@@ -74,15 +45,23 @@ namespace TheBoulder.Controllers
 						Text = " Nunc semper volutpat commodo. Vestibulum sagittis sit amet justo sit amet fringilla. Nam congue ultricies magna, id interdum dolor hendrerit eu."
 					},
 				},
-				CurrentPrompt = _state.Last()
-			};
-		}
-
-		[HttpPost]
-		[Route("save-prompt")]
-		public void SavePrompt(DialoguePrompt prompt)
-		{
-			Console.WriteLine(prompt.ToString());
-		}
+				CurrentPrompt = Task.Run(() =>DialogueService.GetPromptById(id)).Result
+		};
 	}
+
+	[HttpPost]
+	[Route("save-prompt")]
+	public void SavePrompt(Prompt prompt)
+	{
+		Console.WriteLine(prompt.ToString());
+	}
+
+	[HttpPost]
+	[Route("add-response")]
+	public Prompt AddResponse(Prompt prompt)
+	{
+		prompt.Responses.Add(new Response() { Text = "", ID = nextID++ });
+		return prompt;
+	}
+}
 }

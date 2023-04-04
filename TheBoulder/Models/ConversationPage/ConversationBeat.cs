@@ -1,4 +1,4 @@
-﻿namespace TheBoulder.Models.ConversationPage
+﻿namespace TheBoulder.Core.Models.ConversationPage
 {
 	public class ConversationBeat
 	{
